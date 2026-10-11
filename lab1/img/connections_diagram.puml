@@ -1,0 +1,83 @@
+@startuml connections_diagram
+left to right direction
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam rectangle {
+  RoundCorner 10
+  BorderColor #444444
+  BackgroundColor #F7F7F7
+}
+skinparam ArrowColor #555555
+
+' Длительности = PERT-трудоёмкость / 8 ч, рабочие дни.
+' Красным выделен критический путь: 13 > 14 > 2 > 5 > 16 > 17 > 18 (44,29 дн.)
+
+rectangle "Начало" as S #DDEEFF
+rectangle "Конец" as F #DDEEFF
+
+rectangle "**13** Уточнение требований\n2,63 дн." as T13 #FFD9D9;line:red;line.bold
+rectangle "**14** Макеты и UI-компоненты\n6,17 дн." as T14 #FFD9D9;line:red;line.bold
+rectangle "**15** Настройка проекта, БД и окружений\n2,17 дн." as T15
+
+package "CMS (резерв 6,08 дн.)" #E8F4E8 {
+  rectangle "**10** Развёртывание и настройка CMS\n3,17 дн." as T10
+  rectangle "**11** Модели контента и сценарии админов\n5,25 дн." as T11
+  rectangle "**12** Интеграция сайта с CMS\n4,25 дн." as T12
+}
+
+rectangle "**2** Интерфейс и навигация\n4,17 дн." as T2 #FFD9D9;line:red;line.bold
+
+rectangle "**1** Главная и страницы продуктов\n7,33 дн." as T1
+rectangle "**3** Скачивание приложения\n3,17 дн." as T3
+rectangle "**4** Тарифы и предложения\n4,33 дн." as T4
+rectangle "**5** Аккаунты и оплата\n15,83 дн." as T5 #FFD9D9;line:red;line.bold
+rectangle "**6** Блог и журнал изменений\n5,25 дн." as T6
+rectangle "**7** Справка и сообщество\n1,08 дн." as T7
+rectangle "**8** Компания и правовые документы\n2,08 дн." as T8
+rectangle "**9** Каталог плагинов и тем\n5,25 дн." as T9
+
+rectangle "**16** Мобильная адаптация\n4,17 дн." as T16 #FFD9D9;line:red;line.bold
+rectangle "**17** Тестирование и исправления\n8,25 дн." as T17 #FFD9D9;line:red;line.bold
+rectangle "**18** Развёртывание и запуск\n3,08 дн." as T18 #FFD9D9;line:red;line.bold
+
+S --> T13
+T13 -[#red,bold]-> T14
+T13 --> T15
+T14 -[#red,bold]-> T2
+T15 --> T2
+T15 --> T10
+T10 --> T11
+T11 --> T12
+T2 --> T12
+
+T2 --> T1
+T2 --> T3
+T2 --> T4
+T2 -[#red,bold]-> T5
+T2 --> T6
+T2 --> T7
+T2 --> T8
+T2 --> T9
+
+T12 --> T4
+T12 --> T6
+T12 --> T9
+
+T1 --> T16
+T3 --> T16
+T4 --> T16
+T5 -[#red,bold]-> T16
+T6 --> T16
+T7 --> T16
+T8 --> T16
+T9 --> T16
+
+T16 -[#red,bold]-> T17
+T17 -[#red,bold]-> T18
+T18 --> F
+
+legend right
+  <back:#FFD9D9>  </back> критический путь (T = 44,29 рабочих дня)
+  <back:#E8F4E8>  </back> работы по CMS (не критические)
+endlegend
+@enduml

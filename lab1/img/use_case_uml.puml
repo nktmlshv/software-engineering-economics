@@ -1,0 +1,138 @@
+@startuml use_case_uml
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam defaultFontName "DejaVu Sans"
+skinparam usecase {
+  BackgroundColor #F7F7F7
+  BorderColor #444444
+}
+
+actor "Гость" as Guest
+actor "Пользователь" as User
+actor "Редактор\nконтента" as Editor
+actor "Администратор\nCMS" as Admin
+actor "Платёжный\nпровайдер" as Pay
+actor "Хранилище\nрелизов" as Rel
+actor "Почтовый\nсервис" as Mail
+
+User --|> Guest
+Admin --|> Editor
+
+rectangle "Сайт obsidian.md" {
+
+  package "Информационные страницы и навигация" {
+    usecase "1. Просмотр главной страницы\nи возможностей продукта" as UC1
+    usecase "2. Навигация по меню и подвалу" as UC2
+    usecase "3. Переключение языка" as UC3
+    usecase "14. Переход к справке,\nфоруму и Discord" as UC14
+    usecase "15. Информация о компании\nи безопасности" as UC15
+    usecase "16. Правовые документы" as UC16
+  }
+
+  package "Скачивание" {
+    usecase "4. Скачивание установщика для ПК" as UC4
+    usecase "5. Установка мобильного приложения" as UC5
+    usecase "6. Установка Web Clipper" as UC6
+  }
+
+  package "Тарифы" {
+    usecase "7. Бесплатные возможности\nи платные предложения" as UC7
+    usecase "8. Переключение периода оплаты" as UC8
+    usecase "9. Ответы на вопросы (FAQ)" as UC9
+    usecase "10. Корпоративное обращение" as UC10
+  }
+
+  package "Блог и журнал изменений" {
+    usecase "11. Чтение публикаций блога" as UC11
+    usecase "12. Просмотр журнала изменений" as UC12
+    usecase "13. Подписка на RSS" as UC13
+  }
+
+  package "Каталог плагинов и тем" {
+    usecase "29. Поиск и фильтрация\nв каталоге" as UC29
+    usecase "30. Страница плагина или темы" as UC30
+  }
+
+  package "Аккаунты и оплата" {
+    usecase "17. Регистрация" as UC17
+    usecase "18. Вход и выход" as UC18
+    usecase "19. Восстановление пароля" as UC19
+    usecase "20. Выбор предложения\nи возврат к оформлению" as UC20
+    usecase "21. Подтверждение заказа" as UC21
+    usecase "22. Оплата услуги" as UC22
+    usecase "23. Результат оплаты" as UC23
+    usecase "24. Личный кабинет" as UC24
+    usecase "25. Управление автопродлением" as UC25
+    usecase "28. Обработка уведомлений\nплатёжного провайдера" as UC28
+  }
+
+  package "Админ-панель CMS (Strapi)" #E8F4E8 {
+    usecase "31. Вход в админ-панель" as UC31
+    usecase "26. Публикация материалов блога\nи журнала изменений" as UC26
+    usecase "37. Редактирование тарифов и цен" as UC37
+    usecase "38. Редактирование страниц и FAQ" as UC38
+    usecase "32. Добавление плагина\nили темы в каталог" as UC32
+    usecase "33. Публикация новой версии" as UC33
+    usecase "34. Снятие с публикации" as UC34
+    usecase "35. Категории и теги каталога" as UC35
+    usecase "36. Учётные записи и роли\nадминистраторов" as UC36
+  }
+
+  usecase "27. Синхронизация сведений\nо релизах" as UC27
+}
+
+Guest -- UC1
+Guest -- UC2
+Guest -- UC3
+Guest -- UC4
+Guest -- UC5
+Guest -- UC6
+Guest -- UC7
+Guest -- UC8
+Guest -- UC9
+Guest -- UC10
+Guest -- UC11
+Guest -- UC12
+Guest -- UC13
+Guest -- UC14
+Guest -- UC15
+Guest -- UC16
+Guest -- UC29
+Guest -- UC30
+Guest -- UC17
+Guest -- UC18
+Guest -- UC19
+Guest -- UC20
+
+User -- UC21
+User -- UC22
+User -- UC23
+User -- UC24
+User -- UC25
+
+Editor -- UC31
+Editor -- UC26
+Editor -- UC37
+Editor -- UC38
+
+Admin -- UC32
+Admin -- UC33
+Admin -- UC34
+Admin -- UC35
+Admin -- UC36
+
+Pay -- UC22
+Pay -- UC28
+Rel -- UC27
+Mail -- UC19
+Mail -- UC28
+
+UC20 ..> UC18 : <<include>>
+UC22 ..> UC21 : <<include>>
+
+note bottom of UC31
+  Все сценарии админ-панели (26, 32–38)
+  требуют предварительного входа (31).
+end note
+@enduml
